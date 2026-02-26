@@ -33,20 +33,20 @@ pnpm db:studio        # Open Drizzle Studio UI
 ## Architecture
 
 ### API (apps/api)
-- **Entry:** `src/index.ts` starts Fastify on PORT/HOST from env
-- **App config:** `src/app.ts` sets up Fastify with pino logger, CORS, and routes
-- **Database:** `src/db/index.ts` connects via postgres.js, wrapped with Drizzle ORM
-- **Schema:** `src/db/schema.ts` defines Drizzle table definitions
-- **Migrations:** Output to `drizzle/` directory, managed by Drizzle Kit
+- **Entry:** `index.ts` — composição manual de dependências + bootstrap do Fastify
+- **Config:** `config/env.ts` — validação de env vars com Zod (fail-fast)
+- **Domain:** `domain/` — entidades, value objects e ports (interfaces de repositório)
+- **Application:** `application/` — use cases e ports (interfaces de serviços)
+- **Infrastructure:** `infrastructure/` — adapters (Drizzle repository, rotas HTTP, Zod schemas)
 - **Build:** tsup bundles to ESM in `dist/`
-- **Config:** `drizzle.config.ts` points to schema and migration output
+- **Sem pasta `src/`** — arquivos TS ficam direto na raiz de `apps/api/`
 
 ### Docs (apps/docs)
 - Standard Next.js App Router at `src/app/`
 - Path alias: `@/*` maps to `./src/*`
 
 ### Environment Variables (API)
-Required: `DATABASE_URL` (PostgreSQL connection string)
+Required: `DATABASE_URL` (PostgreSQL connection string), `JWT_SECRET` (min 32 chars)
 Optional: `PORT` (3001), `HOST` (0.0.0.0), `LOG_LEVEL` (info), `NODE_ENV`
 See `apps/api/.env.example` for template.
 
@@ -64,3 +64,4 @@ See `apps/api/.env.example` for template.
 | `/create-issue` | Cria issues no GitHub via `gh` CLI seguindo os templates do projeto (Bug, Feature, Task) |
 | `/process-issue` | Lê uma issue do GitHub, cria branch, implementa o código e abre PR |
 | `/create-page` | Cria uma nova página em `apps/docs` seguindo os padrões visuais do `view.md` |
+| `/db-add-table` | Cria uma nova tabela no banco de dados usando Drizzle ORM no pacote @spec-driven/db |
