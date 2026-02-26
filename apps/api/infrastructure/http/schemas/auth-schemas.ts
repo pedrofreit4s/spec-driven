@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+// Request schemas
 export const registerBodySchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email format"),
@@ -17,6 +18,28 @@ export const loginBodySchema = z.object({
 
 export const refreshBodySchema = z.object({
   refreshToken: z.string().min(1, "Refresh token is required"),
+})
+
+// Response schemas
+const userBasicSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  email: z.string().email(),
+})
+
+export const registerResponseSchema = z.object({
+  user: userBasicSchema,
+})
+
+export const loginResponseSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
+  user: userBasicSchema,
+})
+
+export const refreshResponseSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
 })
 
 export type RegisterBody = z.infer<typeof registerBodySchema>

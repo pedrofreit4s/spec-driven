@@ -7,4 +7,8 @@ export const userResponseSchema = z.object({
   createdAt: z.date(),
 })
 
+export const profileResponseSchema = z.object({
+  user: userResponseSchema,
+})
+
 export type UserResponse = z.infer<typeof userResponseSchema>

@@ -34,11 +34,14 @@ apps/api/
 │   │   └── repositories/
 │   │       └── drizzle-user-repository.ts  ← Adapter: UserRepository com Drizzle
 │   └── http/
+│       ├── plugins/
+│       │   └── swagger.ts            ← @fastify/swagger + Scalar (OpenAPI docs)
 │       ├── routes/
 │       │   ├── auth-routes.ts        ← POST /auth/register, /auth/login, /auth/refresh
 │       │   └── user-routes.ts        ← GET /me (protegida por Bearer)
 │       └── schemas/
-│           ├── auth-schemas.ts       ← Zod schemas de request
+│           ├── auth-schemas.ts       ← Zod schemas de request + response
+│           ├── error-schemas.ts      ← Zod schema de error response
 │           └── user-schemas.ts       ← Zod schemas de response
 │
 ├── package.json
@@ -101,6 +104,17 @@ Validação via Zod em `config/env.ts` — falha fast no startup se variáveis o
 | POST | `/auth/login` | Não | `{ email, password }` | `200 { accessToken, refreshToken, user }` |
 | POST | `/auth/refresh` | Não | `{ refreshToken }` | `200 { accessToken, refreshToken }` |
 | GET | `/me` | Bearer | — | `200 { user }` |
+| GET | `/docs` | Não | — | Scalar UI (documentação interativa) |
+| GET | `/openapi.json` | Não | — | OpenAPI 3.1 spec JSON |
+
+## Documentação OpenAPI
+
+- **Spec**: `@fastify/swagger` gera OpenAPI 3.1 automaticamente a partir dos schemas Zod das rotas
+- **UI**: `@scalar/fastify-api-reference` serve UI interativa em `GET /docs`
+- **Type Provider**: `fastify-type-provider-zod` converte schemas Zod para JSON Schema e valida requests
+- **Schemas**: Rotas usam `schema` do Fastify com Zod schemas (body, response, tags, security)
+- Novos endpoints devem incluir `schema` com `body`, `response`, `tags`, `summary` e `description`
+- Endpoints autenticados devem incluir `security: [{ bearerAuth: [] }]`
 
 ## Convenções
 
