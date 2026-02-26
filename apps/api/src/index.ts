@@ -1,9 +1,13 @@
-import { log } from "@repo/logger";
-import { createServer } from "./server";
+import { buildApp } from "./app.js"
 
-const port = process.env.PORT || 5001;
-const server = createServer();
+const PORT = Number(process.env.PORT) || 3001
+const HOST = process.env.HOST ?? "0.0.0.0"
 
-server.listen(port, () => {
-  log(`api running on ${port}`);
-});
+const app = buildApp()
+
+try {
+  await app.listen({ port: PORT, host: HOST })
+} catch (err) {
+  app.log.error(err)
+  process.exit(1)
+}
