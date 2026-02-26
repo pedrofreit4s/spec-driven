@@ -1,11 +1,7 @@
-// Define your database tables here
-// Example:
-// import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
-//
-// export const users = pgTable("users", {
-//   id: serial("id").primaryKey(),
-//   name: text("name").notNull(),
-//   createdAt: timestamp("created_at").defaultNow().notNull(),
-// })
+export { users } from "./users"
+export type { InsertUser, SelectUser } from "./users"
 
-export {}
+export { refreshTokens } from "./refresh-tokens"
+export type { InsertRefreshToken, SelectRefreshToken } from "./refresh-tokens"
+
+export { refreshTokensRelations, usersRelations } from "./relations"
