@@ -1,124 +1,125 @@
-# spec-driven
+# 01 - Fundamentos
 
-TypeScript monorepo (pnpm + Turborepo) com duas aplicações:
+> GitHub Issue Templates, Claude Code Skills e automacao de workflow com GitHub CLI.
 
-- **apps/api** — Fastify 5 REST API com Drizzle ORM + PostgreSQL + Zod
-- **apps/docs** — Next.js 15 documentation site (pt-BR)
+## O que foi feito nesta branch?
 
-## Pré-requisitos
+Esta branch configura a **infraestrutura de workflow** do projeto — tudo que o Claude Code precisa para criar issues e implementar codigo de forma autonoma.
+
+### O que foi criado
+
+```
+.claude/skills/
+  create-issue/SKILL.md     # Skill para criar issues via gh CLI
+  process-issue/SKILL.md    # Skill para implementar issues e abrir PRs
+
+.github/ISSUE_TEMPLATE/
+  bug_report.yml             # Template de bug report
+  feature_request.yml        # Template de feature request
+  task.yml                   # Template de task
+  config.yml                 # Desabilita issues em branco
+
+CLAUDE.md                    # Convencoes do projeto para o Claude Code
+```
+
+## Configurando o ambiente
+
+### Pre-requisitos
 
 - [Node.js](https://nodejs.org/) >= 20
 - [pnpm](https://pnpm.io/) >= 9
 - [Docker](https://www.docker.com/) (para PostgreSQL local)
 
-## Setup rápido
+### 1. Clonar e instalar
 
 ```bash
 git clone git@github.com:pedrofreit4s/spec-driven.git
 cd spec-driven
 pnpm install
-cp apps/api/.env.example apps/api/.env  # configure DATABASE_URL
-pnpm dev                                 # API :3001, Docs :3000
 ```
 
----
+### 2. Instalar o GitHub CLI (`gh`)
 
-## Configurando o ambiente com Claude Code
+O GitHub CLI e necessario para que as skills criem issues e PRs pelo terminal.
 
-Este projeto utiliza o [Claude Code](https://docs.anthropic.com/en/docs/claude-code) como assistente de desenvolvimento com skills customizadas para gerenciar issues e implementar código.
-
-### 1. Instalar o GitHub CLI (`gh`)
-
-O GitHub CLI é necessário para que as skills possam criar issues e PRs diretamente do terminal.
-
-**Windows (winget):**
+**Windows:**
 
 ```bash
 winget install GitHub.cli
 ```
 
-**macOS (Homebrew):**
+**macOS:**
 
 ```bash
 brew install gh
 ```
 
-**Linux (apt):**
+**Linux:**
 
 ```bash
 sudo apt install gh
 ```
 
-Após instalar, autentique-se:
+Apos instalar, autentique-se:
 
 ```bash
 gh auth login
 ```
 
-Siga o fluxo interativo e escolha autenticação via browser. Verifique se funcionou:
+Siga o fluxo interativo e escolha autenticacao via browser. Verifique:
 
 ```bash
 gh auth status
 ```
 
-### 2. Instalar o Claude Code
+### 3. Instalar o Claude Code
 
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-### 3. Inicializar o Claude Code no projeto
-
-Navegue até a pasta do projeto e inicie o Claude Code:
+### 4. Inicializar o Claude Code no projeto
 
 ```bash
 cd spec-driven
 claude
 ```
 
-Se for a primeira vez, o Claude Code vai detectar automaticamente o `CLAUDE.md` e carregar as convenções do projeto.
+Na primeira execucao, o Claude Code detecta o `CLAUDE.md` e carrega as convencoes do projeto automaticamente.
 
-### 4. Instalar o GitHub App do Claude Code
+### 5. Instalar o GitHub App
 
-Dentro do Claude Code, rode o comando:
+Dentro do Claude Code, rode:
 
 ```
 /install-github-app
 ```
 
-Siga as instruções no browser para autorizar o GitHub App na sua conta/organização. Isso permite que o Claude Code interaja com o repositório (issues, PRs, etc).
+Siga as instrucoes no browser para autorizar o GitHub App. Isso permite que o Claude Code interaja com o repositorio (issues, PRs, etc).
 
----
+## Skills disponiveis
 
-## Workflow com Skills
+### `/create-issue` — Criar issues no GitHub
 
-### Criar issues — `/create-issue`
-
-Use essa skill para criar issues estruturadas no GitHub sem sair do terminal.
-
-**Como usar:**
-
-No Claude Code, digite:
+Cria issues estruturadas seguindo os templates do projeto, direto do terminal.
 
 ```
 /create-issue
 ```
 
-Ou passe uma descrição direta:
+Ou com descricao direta:
 
 ```
-/create-issue Configurar CI com GitHub Actions
+/create-issue Criar endpoint de healthcheck
 ```
 
-**O que acontece:**
+**Fluxo:**
 
-1. O Claude pergunta o **tipo** da issue (Bug, Feature ou Task)
-2. Coleta as informações necessárias com base no tipo escolhido
-3. Monta o body em Markdown seguindo os templates do projeto
-4. Mostra um **resumo** para você confirmar antes de criar
-5. Cria a issue via `gh issue create` e retorna o link
-
-**Tipos disponíveis:**
+1. Escolhe o tipo (Bug, Feature ou Task)
+2. Coleta as informacoes necessarias
+3. Monta o body em Markdown seguindo os templates
+4. Mostra resumo para confirmacao
+5. Cria a issue via `gh` e retorna o link
 
 | Tipo | Label | Prefixo |
 |------|-------|---------|
@@ -126,55 +127,51 @@ Ou passe uma descrição direta:
 | Feature Request | `enhancement` | `[Feature]:` |
 | Task | `task` | `[Task]:` |
 
----
+### `/process-issue` — Implementar uma issue
 
-### Processar issues — `/process-issue`
-
-Use essa skill para ler uma issue do GitHub e implementar o código necessário.
-
-**Como usar:**
-
-No Claude Code, diga:
-
-```
-Processe a issue #42
-```
-
-Ou use a skill diretamente:
+Le uma issue do GitHub, implementa o codigo e abre um PR.
 
 ```
 /process-issue 42
 ```
 
-**O que acontece:**
+**Fluxo:**
 
-1. **Lê a issue** do GitHub via `gh issue view`
-2. **Analisa** os critérios de aceite e identifica o app afetado
-3. **Cria uma branch** a partir de `main` seguindo a convenção:
-   ```
-   feat/42-descricao-curta
-   fix/99-descricao-curta
-   chore/50-descricao-curta
-   ```
-4. **Implementa** o código seguindo as convenções do `CLAUDE.md`
-5. **Valida** com lint, type-check e build:
-   ```bash
-   pnpm lint
-   pnpm check-types
-   pnpm build
-   ```
-6. **Commita** com mensagem padronizada:
-   ```
-   feat(api): adiciona endpoint de users (#42)
-   ```
-7. **Abre um PR** para `main` referenciando a issue com `Closes #42`
+1. Le a issue via `gh issue view`
+2. Analisa criterios de aceite e identifica o app
+3. Cria branch a partir de `main` (`feat/42-descricao-curta`)
+4. Implementa seguindo as convencoes do `CLAUDE.md`
+5. Valida com `pnpm lint`, `pnpm check-types`, `pnpm build`
+6. Commita com mensagem padronizada (`feat(api): descricao (#42)`)
+7. Abre PR para `main` com `Closes #42`
 
----
+## GitHub Issues como backlog do agente
 
-## Comandos úteis
+A ideia central desta branch e usar o **GitHub Issues como fonte unica de verdade** para o que precisa ser feito no projeto. Em vez de descrever tarefas em conversas soltas, tudo vira uma issue estruturada com templates padronizados.
+
+### Por que automatizar a criacao de issues?
+
+- **Padronizacao**: todas as issues seguem o mesmo template, com os mesmos campos. Nao importa quem criou — a estrutura e consistente.
+- **Velocidade**: em vez de abrir o browser, navegar ate o repo e preencher formularios, voce digita `/create-issue` e responde algumas perguntas.
+- **Granularidade**: o Claude quebra features grandes em issues menores (1 issue = 1 PR = 1 app).
+- **Criterios de aceite**: toda issue tem um checklist verificavel. Ou todos os checks estao marcados, ou nao esta pronto.
+
+### Autonomia do Claude Code
+
+Combinando as duas skills, o Claude Code opera com **autonomia dentro de limites claros**:
+
+```
+/create-issue   -->  Cria a issue no GitHub com criterios de aceite
+/process-issue  -->  Le a issue, implementa e abre PR
+Voce             -->  Revisa o PR e faz merge
+```
+
+O agente nao improvisa. Ele segue o que esta na issue (criterios de aceite), como esta no `CLAUDE.md` (convencoes), e nada vai para `main` sem review humano.
+
+## Comandos uteis
 
 ```bash
-pnpm dev              # Inicia todos os dev servers
+pnpm dev              # Inicia todos os dev servers (API :3001, Docs :3000)
 pnpm build            # Build de todas as apps
 pnpm lint             # Lint com Biome
 pnpm lint:fix         # Auto-fix de lint
