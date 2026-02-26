@@ -47,6 +47,7 @@ Seguindo:
 - Critérios de aceite da issue
 - Convenções do `CLAUDE.md`
 - Padrões do app afetado
+- Após implementação, se necessário edite ou crie um `CLAUDE.md`
 
 ### 5. Validar
 
