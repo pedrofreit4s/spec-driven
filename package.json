@@ -1,6 +1,23 @@
 {
   "name": "spec-driven",
-  "private": true,
+  "private": false,
+  "author": "Pedro Freitas",
+  "license": "MIT",
+  "homepage": "https://github.com/pedrofreit4s/spec-driven",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pedrofreit4s/spec-driven.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pedrofreit4s/spec-driven/issues"
+  },
+  "keywords": [
+    "spec-driven",
+    "api",
+    "documentation",
+    "typescript",
+    "monorepo"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
