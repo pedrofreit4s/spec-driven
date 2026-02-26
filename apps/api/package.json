@@ -19,6 +19,7 @@
     "@spec-driven/db": "workspace:*",
     "@spec-driven/http": "workspace:*",
     "@spec-driven/logger": "workspace:*",
+    "dotenv": "^17.3.1",
     "drizzle-orm": "^0.36.0",
     "fastify-type-provider-zod": "^4.0.2",
     "zod": "^3.23.0"
