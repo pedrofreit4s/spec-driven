@@ -6,6 +6,7 @@ import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod
 import { AuthenticateUseCase } from "./application/user/use-cases/authenticate.js"
 import { GetProfileUseCase } from "./application/user/use-cases/get-profile.js"
 import { RefreshTokenUseCase } from "./application/user/use-cases/refresh-token.js"
+import { LogoutUseCase } from "./application/user/use-cases/logout.js"
 import { RegisterUseCase } from "./application/user/use-cases/register.js"
 import { env } from "./config/env.js"
 import { DrizzleUserRepository } from "./infrastructure/database/repositories/drizzle-user-repository.js"
@@ -25,6 +26,7 @@ const userRepository = new DrizzleUserRepository(db)
 const registerUseCase = new RegisterUseCase(userRepository, hasher)
 const authenticateUseCase = new AuthenticateUseCase(userRepository, hasher, tokenProvider)
 const refreshTokenUseCase = new RefreshTokenUseCase(userRepository, tokenProvider)
+const logoutUseCase = new LogoutUseCase(userRepository)
 const getProfileUseCase = new GetProfileUseCase(userRepository)
 
 // Server
@@ -43,12 +45,18 @@ server.setSerializerCompiler(serializerCompiler)
 // Swagger + Scalar docs
 await registerSwagger(server)
 
+// Auth middleware
+const authMiddleware = createAuthMiddleware({ secret: env.JWT_SECRET })
+
 // Routes
-registerAuthRoutes(server, { registerUseCase, authenticateUseCase, refreshTokenUseCase })
-registerUserRoutes(server, {
-  getProfileUseCase,
-  authMiddleware: createAuthMiddleware({ secret: env.JWT_SECRET }),
+registerAuthRoutes(server, {
+  registerUseCase,
+  authenticateUseCase,
+  refreshTokenUseCase,
+  logoutUseCase,
+  authMiddleware,
 })
+registerUserRoutes(server, { getProfileUseCase, authMiddleware })
 
 try {
   await server.start({ port: env.PORT, host: env.HOST })

@@ -26,6 +26,7 @@ apps/api/
 │       └── use-cases/
 │           ├── register.ts           ← RegisterUseCase
 │           ├── authenticate.ts       ← AuthenticateUseCase
+│           ├── logout.ts             ← LogoutUseCase
 │           ├── refresh-token.ts      ← RefreshTokenUseCase
 │           └── get-profile.ts        ← GetProfileUseCase
 │
@@ -37,7 +38,7 @@ apps/api/
 │       ├── plugins/
 │       │   └── swagger.ts            ← @fastify/swagger + Scalar (OpenAPI docs)
 │       ├── routes/
-│       │   ├── auth-routes.ts        ← POST /auth/register, /auth/login, /auth/refresh
+│       │   ├── auth-routes.ts        ← POST /auth/register, /auth/login, /auth/refresh, /auth/logout
 │       │   └── user-routes.ts        ← GET /me (protegida por Bearer)
 │       └── schemas/
 │           ├── auth-schemas.ts       ← Zod schemas de request + response
@@ -103,6 +104,7 @@ Validação via Zod em `config/env.ts` — falha fast no startup se variáveis o
 | POST | `/auth/register` | Não | `{ name, email, password }` | `201 { user }` |
 | POST | `/auth/login` | Não | `{ email, password }` | `200 { accessToken, refreshToken, user }` |
 | POST | `/auth/refresh` | Não | `{ refreshToken }` | `200 { accessToken, refreshToken }` |
+| POST | `/auth/logout` | Bearer | — | `204 No Content` |
 | GET | `/me` | Bearer | — | `200 { user }` |
 | GET | `/docs` | Não | — | Scalar UI (documentação interativa) |
 | GET | `/openapi.json` | Não | — | OpenAPI 3.1 spec JSON |
