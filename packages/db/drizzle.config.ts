@@ -1,4 +1,8 @@
+import path from "node:path"
+import dotenv from "dotenv"
 import { defineConfig } from "drizzle-kit"
+
+dotenv.config({ path: path.resolve(__dirname, "../../apps/api/.env") })
 
 export default defineConfig({
   schema: [
