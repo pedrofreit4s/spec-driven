@@ -11,13 +11,7 @@
   "bugs": {
     "url": "https://github.com/pedrofreit4s/spec-driven/issues"
   },
-  "keywords": [
-    "spec-driven",
-    "api",
-    "documentation",
-    "typescript",
-    "monorepo"
-  ],
+  "keywords": ["spec-driven", "api", "documentation", "typescript", "monorepo"],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",

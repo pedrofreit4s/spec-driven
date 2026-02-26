@@ -63,3 +63,4 @@ See `apps/api/.env.example` for template.
 |---------|-----------|
 | `/create-issue` | Cria issues no GitHub via `gh` CLI seguindo os templates do projeto (Bug, Feature, Task) |
 | `/process-issue` | Lê uma issue do GitHub, cria branch, implementa o código e abre PR |
+| `/create-page` | Cria uma nova página em `apps/docs` seguindo os padrões visuais do `view.md` |
