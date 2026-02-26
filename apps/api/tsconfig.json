@@ -10,6 +10,6 @@
     "resolveJsonModule": true,
     "noEmit": true
   },
-  "include": ["src/**/*", "tsup.config.ts"],
+  "include": ["**/*"],
   "exclude": ["node_modules", "dist"]
 }
