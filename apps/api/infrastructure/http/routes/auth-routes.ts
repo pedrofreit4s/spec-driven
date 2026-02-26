@@ -1,6 +1,7 @@
 import type { ServerInstance } from "@spec-driven/http"
 import type { FastifyReply, FastifyRequest } from "fastify"
 import type { ZodTypeProvider } from "fastify-type-provider-zod"
+import { z } from "zod"
 import type { AuthenticateUseCase } from "../../../application/user/use-cases/authenticate.js"
 import type { LogoutUseCase } from "../../../application/user/use-cases/logout.js"
 import type { RefreshTokenUseCase } from "../../../application/user/use-cases/refresh-token.js"
@@ -101,7 +102,7 @@ export function registerAuthRoutes(app: ServerInstance, deps: AuthRouteDeps) {
         tags: ["auth"],
         security: [{ bearerAuth: [] }],
         response: {
-          204: { type: "null", description: "No Content" },
+          204: z.void().describe("No Content"),
           401: errorResponseSchema,
         },
       },
