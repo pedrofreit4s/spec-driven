@@ -7,3 +7,5 @@
 //   name: text("name").notNull(),
 //   createdAt: timestamp("created_at").defaultNow().notNull(),
 // })
+
+export {}
