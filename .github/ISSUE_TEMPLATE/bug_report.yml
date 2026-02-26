@@ -1,0 +1,69 @@
+name: Bug Report
+description: Reportar um bug encontrado no projeto
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: App afetado
+      description: Em qual parte do monorepo o bug ocorre?
+      options:
+        - API (apps/api)
+        - Docs (apps/docs)
+        - Monorepo / Build
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descricao do bug
+      description: Descreva de forma clara o que aconteceu.
+      placeholder: O que aconteceu?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+      description: O que voce esperava que acontecesse?
+      placeholder: O que deveria ter acontecido?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      description: Lista de passos para reproduzir o bug.
+      placeholder: |
+        1. Execute `pnpm dev`
+        2. Faca uma requisicao para ...
+        3. Observe o erro ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Screenshots
+      description: Cole logs de erro ou screenshots relevantes.
+      render: shell
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Ambiente
+      description: Informacoes sobre o ambiente onde o bug ocorre.
+      placeholder: |
+        - Node.js: 22.x
+        - pnpm: 9.x
+        - SO: Windows 11 / macOS / Linux
+      value: |
+        - Node.js:
+        - pnpm:
+        - SO:
+    validations:
+      required: false

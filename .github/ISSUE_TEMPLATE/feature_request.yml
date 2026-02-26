@@ -1,0 +1,47 @@
+name: Feature Request
+description: Sugerir uma nova funcionalidade ou melhoria
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: App relacionado
+      description: Qual parte do monorepo sera afetada?
+      options:
+        - API (apps/api)
+        - Docs (apps/docs)
+        - Monorepo / Build
+        - Novo pacote
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema ou motivacao
+      description: Descreva o problema que essa feature resolve ou a motivacao por tras dela.
+      placeholder: Atualmente nao e possivel ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solucao proposta
+      description: Descreva como voce imagina que a feature deveria funcionar.
+      placeholder: Seria ideal que ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: Voce considerou alguma alternativa? Descreva-as aqui.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+      description: Qualquer informacao extra, mockups, links ou referencias.

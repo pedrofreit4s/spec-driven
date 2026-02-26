@@ -1,0 +1,43 @@
+name: Task
+description: Registrar uma tarefa tecnica ou item de trabalho
+title: "[Task]: "
+labels: ["task"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: App relacionado
+      description: Qual parte do monorepo sera afetada?
+      options:
+        - API (apps/api)
+        - Docs (apps/docs)
+        - Monorepo / Build
+        - Novo pacote
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descricao da tarefa
+      description: Descreva de forma clara o que precisa ser feito.
+      placeholder: Implementar / Configurar / Migrar ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceite
+      description: Como sabemos que a tarefa esta concluida?
+      placeholder: |
+        - [ ] Criterio 1
+        - [ ] Criterio 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+      description: Links, referencias ou informacoes extras relevantes.

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussoes
+    url: https://github.com/freitaslab/spec-driven/discussions
+    about: Use as discussoes para perguntas gerais e ideias.
